@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Sterling Finance</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --plum:#3A0353; --plum-deep:#2A023E; --plum-ink:#20022E;
+    --purple:#804A8A; --cream:#F8D299; --amber:#F59E51;
+    --cream-soft:#F3E3C2; --white:#FDF8EE;
+    --serif:Georgia,'Noto Serif Display','Liberation Serif',serif;
+    --sans:'Noto Sans','Segoe UI',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--plum-deep);color:var(--white);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15}
+  button{font-family:var(--sans)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;width:100%}
+
+  #splash{position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;
+    background:radial-gradient(120% 120% at 50% 30%,#3A0353 0%,#2A023E 70%,#20022E 100%);
+    transition:opacity .7s ease}
+  #splash.hide{opacity:0;pointer-events:none}
+  .splash-inner{text-align:center}
+  .splash-inner svg{width:110px;height:auto}
+  .sp-shield{stroke-dasharray:100;stroke-dashoffset:100;opacity:1;animation:sp-draw 2.2s cubic-bezier(.6,.05,.35,1) infinite}
+  .sp-s{opacity:0;transform-box:fill-box;transform-origin:center;animation:sp-s 2.2s ease-in-out infinite}
+  @keyframes sp-draw{0%{stroke-dashoffset:100;opacity:1}42%{stroke-dashoffset:0}82%{opacity:1}96%,100%{opacity:0;stroke-dashoffset:0}}
+  @keyframes sp-s{0%,16%{opacity:0;transform:scale(.5)}26%{opacity:1;transform:scale(1.08)}32%,78%{opacity:1;transform:scale(1)}88%{opacity:0;transform:scale(.85)}100%{opacity:0}}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(42,2,62,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(128,74,138,.35)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:70px;max-width:960px;margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:26px;height:40px}
+  .brand span{font-family:var(--serif);font-size:19px;color:var(--cream)}
+  .brand small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.42em;color:var(--purple);font-weight:600}
+  .who{font-size:12.5px;color:var(--purple);margin-right:14px}
+  .btn{display:inline-block;padding:10px 22px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid transparent;transition:all .25s ease}
+  .btn-amber{background:var(--amber);color:var(--plum-ink)}
+  .btn-amber:hover{background:var(--cream)}
+  .btn-ghost{border-color:var(--purple);color:var(--cream);background:transparent}
+  .btn-ghost:hover{border-color:var(--cream)}
+
+  main{flex:1;padding:40px 0 80px;width:100%}
+
+  /* ---------- login ---------- */
+  .login-card{max-width:400px;margin:8vh auto 0;background:linear-gradient(160deg,rgba(128,74,138,.18),rgba(58,3,83,.4));
+    border:1px solid rgba(128,74,138,.45);border-radius:24px;padding:40px 34px}
+  .eyebrow{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:600}
+  .login-card h1{font-size:28px;color:var(--white);margin:12px 0 6px}
+  .login-card .sub{font-size:14px;color:var(--cream-soft);margin-bottom:28px}
+  .field{margin-bottom:16px}
+  label{display:block;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;font-weight:600}
+  input{width:100%;padding:13px 16px;font-size:15px;font-family:var(--sans);color:var(--white);
+    background:rgba(32,2,46,.6);border:1px solid rgba(128,74,138,.5);border-radius:12px;outline:none;transition:border-color .2s ease}
+  input:focus{border-color:var(--amber)}
+  .btn-wide{width:100%;padding:14px;font-size:15.5px}
+  .login-error{display:none;margin:0 0 16px;padding:12px 16px;border-radius:12px;
+    background:rgba(245,158,81,.12);border:1px solid rgba(245,158,81,.5);color:var(--cream);font-size:14px}
+
+  /* ---------- dashboard ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+  .stat{background:linear-gradient(160deg,rgba(128,74,138,.16),rgba(58,3,83,.35));border:1px solid rgba(128,74,138,.4);
+        border-radius:16px;padding:18px 20px}
+  .stat b{font-family:var(--serif);font-size:30px;color:var(--amber);display:block}
+  .stat span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple)}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+  .tab{padding:9px 20px;border-radius:999px;background:transparent;border:1px solid rgba(128,74,138,.5);
+       color:var(--cream-soft);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s ease}
+  .tab.on{background:var(--amber);border-color:var(--amber);color:var(--plum-ink)}
+  .filt{padding:7px 16px;border-radius:999px;background:transparent;border:1px solid rgba(128,74,138,.4);
+        color:var(--purple);font-size:13px;cursor:pointer;transition:all .2s ease}
+  .filt.on{border-color:var(--amber);color:var(--amber)}
+  .search{flex:1;min-width:180px;padding:10px 16px;border-radius:999px;background:rgba(32,2,46,.6);
+    border:1px solid rgba(128,74,138,.5);color:var(--white);font-size:14px;outline:none}
+  .search:focus{border-color:var(--amber)}
+  .search::placeholder{color:#6B4A78}
+
+  .rec{background:linear-gradient(160deg,rgba(128,74,138,.14),rgba(58,3,83,.3));border:1px solid rgba(128,74,138,.35);
+       border-radius:16px;margin-bottom:12px;overflow:hidden}
+  .rec-head{display:flex;align-items:center;gap:14px;padding:15px 20px;cursor:pointer;flex-wrap:wrap}
+  .rec-head:hover{background:rgba(245,158,81,.05)}
+  .svc-badge{flex:none;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    padding:4px 10px;border-radius:999px;border:1px solid}
+  .svc-loans{color:var(--amber);border-color:rgba(245,158,81,.55);background:rgba(245,158,81,.1)}
+  .svc-mortgages{color:var(--cream);border-color:rgba(248,210,153,.5);background:rgba(248,210,153,.08)}
+  .svc-investments{color:#C9A0E8;border-color:rgba(128,74,138,.7);background:rgba(128,74,138,.18)}
+  .rec-name{font-family:var(--serif);font-size:17px;color:var(--cream);font-weight:600}
+  .rec-meta{font-size:13px;color:var(--purple)}
+  .rec-date{margin-left:auto;font-size:12.5px;color:#5E3A6B}
+  .rec-body{display:none;border-top:1px solid rgba(128,74,138,.3);padding:16px 20px}
+  .rec.open .rec-body{display:block}
+  .kv{display:grid;grid-template-columns:200px 1fr;gap:6px 18px;font-size:14px}
+  .kv dt{color:var(--purple);text-transform:uppercase;font-size:11.5px;letter-spacing:.1em;padding-top:2px}
+  .kv dd{color:var(--cream-soft);word-break:break-word}
+  .app-sub{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(245,158,81,.4)}
+  .app-sub h4{font-family:var(--serif);font-size:15px;color:var(--amber);margin-bottom:12px;font-weight:600}
+  .empty{text-align:center;color:#5E3A6B;padding:50px 0;font-size:14.5px}
+  .del{margin-left:10px;padding:4px 12px;border-radius:99px;background:transparent;border:1px solid rgba(245,158,81,.4);
+       color:var(--amber);font-size:12px;cursor:pointer}
+  .del:hover{border-color:var(--amber)}
+
+  footer{border-top:1px solid rgba(128,74,138,.3);padding:22px 0;background:var(--plum-ink);text-align:center;font-size:12.5px;color:#5E3A6B}
+
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.kv{grid-template-columns:1fr;gap:2px 0}.kv dt{margin-top:8px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  var SUPABASE_URL = "https://xotvdgqvexuovktcpdkw.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvdHZkZ3F2ZXh1b3ZrdGNwZGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwNTMxOTIsImV4cCI6MjEwNzYyOTE5Mn0.TzLyX7GLnEbNwDil77SnXPAEu9lLU_Vh1JyhM2TpB_E";
+</script>
+<base target="_blank">
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-inner">
+    <svg viewBox="54 30 120 195" fill="none">
+      <path class="sp-shield" d="M112 44 L160 60 V132 C160 172 140 196 112 210 C84 196 64 172 64 132 V60 Z" pathLength="100" stroke="#F8D299" stroke-width="3.5"/>
+      <g class="sp-s" fill="#F59E51"><g transform="translate(112 121.46) scale(0.06642 -0.06642) translate(-278.50 -357.00)"><path d="M256 -10Q180 -10 131.5 10.0Q83 30 60.0 62.5Q37 95 37 131Q37 174 65.5 194.0Q94 214 134 214Q134 132 151.0 85.0Q168 38 199.0 19.0Q230 0 272 0Q334 0 373.0 34.0Q412 68 412 136Q412 182 392.5 211.5Q373 241 334.5 263.5Q296 286 239 311Q150 349 101.5 397.5Q53 446 53 529Q53 620 117.5 672.0Q182 724 294 724Q386 724 439.0 690.0Q492 656 492 609Q492 576 464.5 554.5Q437 533 385 533Q385 625 360.0 669.0Q335 713 274 713Q243 713 216.5 701.0Q190 689 173.0 661.5Q156 634 156 588Q156 546 173.5 516.5Q191 487 229.0 463.0Q267 439 330 412Q391 386 433.5 357.5Q476 329 498.0 291.5Q520 254 520 201Q520 106 451.0 48.0Q382 -10 256 -10Z"/></g></g>
+    </svg>
+  </div>
+</div>
+
+<header>
+  <nav>
+    <div class="brand">
+      <svg viewBox="54 34 116 186" fill="none" aria-hidden="true">
+        <path d="M112 44 L160 60 V132 C160 172 140 196 112 210 C84 196 64 172 64 132 V60 Z" stroke="#F8D299" stroke-width="5"/>
+        <g fill="#F59E51"><g transform="translate(112 121.46) scale(0.06642 -0.06642) translate(-278.50 -357.00)"><path d="M256 -10Q180 -10 131.5 10.0Q83 30 60.0 62.5Q37 95 37 131Q37 174 65.5 194.0Q94 214 134 214Q134 132 151.0 85.0Q168 38 199.0 19.0Q230 0 272 0Q334 0 373.0 34.0Q412 68 412 136Q412 182 392.5 211.5Q373 241 334.5 263.5Q296 286 239 311Q150 349 101.5 397.5Q53 446 53 529Q53 620 117.5 672.0Q182 724 294 724Q386 724 439.0 690.0Q492 656 492 609Q492 576 464.5 554.5Q437 533 385 533Q385 625 360.0 669.0Q335 713 274 713Q243 713 216.5 701.0Q190 689 173.0 661.5Q156 634 156 588Q156 546 173.5 516.5Q191 487 229.0 463.0Q267 439 330 412Q391 386 433.5 357.5Q476 329 498.0 291.5Q520 254 520 201Q520 106 451.0 48.0Q382 -10 256 -10Z"/></g></g>
+      </svg>
+      <span>Sterling<small>ADMIN</small></span>
+    </div>
+    <div id="user-box" hidden>
+      <span class="who" id="who"></span>
+      <button class="btn btn-ghost" id="logout" type="button">Log out</button>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- LOGIN -->
+  <div class="login-card" id="login-view">
+    <p class="eyebrow">Staff only</p>
+    <h1>Admin sign in</h1>
+    <p class="sub">Sign in to view enquiry and loan application submissions.</p>
+    <p class="login-error" id="login-error" role="alert"></p>
+    <form id="login-form">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-amber btn-wide" type="submit">Sign in</button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dash-view" hidden>
+    <div class="stats">
+      <div class="stat"><b id="st-total">–</b><span>Total enquiries</span></div>
+      <div class="stat"><b id="st-loans">–</b><span>Loans</span></div>
+      <div class="stat"><b id="st-mortgages">–</b><span>Mortgages</span></div>
+      <div class="stat"><b id="st-apps">–</b><span>Loan applications</span></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="tab on" data-tab="combined" type="button">By applicant</button>
+      <button class="tab" data-tab="enquiries" type="button">Enquiries</button>
+      <button class="tab" data-tab="applications" type="button">Loan applications</button>
+      <span id="enquiry-filters" style="display:contents">
+        <button class="filt on" data-svc="all" type="button">All</button>
+        <button class="filt" data-svc="loans" type="button">Loans</button>
+        <button class="filt" data-svc="mortgages" type="button">Mortgages</button>
+        <button class="filt" data-svc="investments" type="button">Investments</button>
+      </span>
+      <input class="search" id="search" type="search" placeholder="Search name or email…">
+      <button class="btn btn-ghost" id="refresh" type="button">Refresh</button>
+    </div>
+
+    <div id="list"></div>
+  </div>
+
+</main>
+
+<footer>Sterling Finance admin — authorised staff only.</footer>
+
+<script>
+(function () {
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var splash = document.getElementById("splash");
+  function showLoader () { splash.style.display = "flex"; splash.classList.remove("hide"); }
+  function hideLoader () { splash.classList.add("hide"); setTimeout(function () { splash.style.display = "none"; }, 400); }
+
+  var view = { tab: "combined", svc: "all", q: "" };
+  var data = { enquiries: [], applications: [] };
+
+  function esc (s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function fmt (ts) {
+    var d = new Date(ts);
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
+      + " " + d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  }
+  function kv (pairs) {
+    var out = '<dl class="kv">';
+    pairs.forEach(function (p) {
+      if (p[1] === null || p[1] === undefined || p[1] === "") return;
+      out += "<dt>" + esc(p[0]) + "</dt><dd>" + esc(p[1]) + "</dd>";
+    });
+    return out + "</dl>";
+  }
+
+  /* ---------- auth ---------- */
+  function showDash (user) {
+    document.getElementById("login-view").hidden = true;
+    document.getElementById("dash-view").hidden = false;
+    document.getElementById("user-box").hidden = false;
+    document.getElementById("who").textContent = user.email;
+    load();
+  }
+  function showLogin () {
+    document.getElementById("login-view").hidden = false;
+    document.getElementById("dash-view").hidden = true;
+    document.getElementById("user-box").hidden = true;
+  }
+
+  sb.auth.getSession().then(function (r) {
+    if (r.data && r.data.session) showDash(r.data.session.user);
+    else showLogin();
+  });
+
+  document.getElementById("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var err = document.getElementById("login-error");
+    err.style.display = "none";
+    showLoader();
+    sb.auth.signInWithPassword({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    }).then(function (r) {
+      hideLoader();
+      if (r.error) { err.textContent = "Sign in failed: " + r.error.message; err.style.display = "block"; }
+      else showDash(r.data.user);
+    });
+  });
+
+  document.getElementById("logout").addEventListener("click", function () {
+    sb.auth.signOut().then(showLogin);
+  });
+
+  /* ---------- data ---------- */
+  function load () {
+    showLoader();
+    Promise.all([
+      sb.from("enquiries").select("*").order("created_at", { ascending: false }).limit(500),
+      sb.from("loan_applications").select("*, enquiry:enquiries(name, email, service)").order("created_at", { ascending: false }).limit(500)
+    ]).then(function (res) {
+      hideLoader();
+      data.enquiries = (res[0].error) ? [] : res[0].data;
+      data.applications = (res[1].error) ? [] : res[1].data;
+      if (res[0].error || res[1].error) {
+        document.getElementById("list").innerHTML =
+          '<p class="empty">Could not load submissions. Did you run the admin policies in the SQL setup?</p>';
+      }
+      render();
+    });
+  }
+  document.getElementById("refresh").addEventListener("click", load);
+
+  /* ---------- rendering ---------- */
+  function combinedCard (r, app) {
+    var det = Object.keys(r.details || {}).map(function (k) { return [k.replace(/_/g, " "), r.details[k]]; });
+    var body = kv(det.concat([["Message", r.message]]));
+    if (app) {
+      body += '<div class="app-sub"><h4>Loan application — step 2</h4>' + kv([
+        ["Date of birth", app.dob],
+        ["Nationality", app.nationality],
+        ["Address", app.address],
+        ["Employment status", app.employment_status],
+        ["Occupation", app.occupation],
+        ["Length of employment", app.employment_length],
+        ["Monthly income", app.monthly_income != null ? "$" + app.monthly_income : ""],
+        ["Account number", app.account_number],
+        ["Bank", app.bank],
+        ["Account type", app.account_type],
+        ["Branch", app.branch],
+        ["Online banking", app.online_banking ? "Yes" : "No"],
+        ["Loan term", app.loan_term],
+        ["Purpose", app.purpose]
+      ]) + '</div>';
+    }
+    return '<div class="rec" data-id="' + esc(r.id) + '">' +
+      '<div class="rec-head">' +
+        '<span class="svc-badge svc-' + esc(r.service) + '">' + esc(r.service) + '</span>' +
+        '<span class="rec-name">' + esc(r.name) + '</span>' +
+        '<span class="rec-meta">' + esc(r.email) + (r.phone ? " · " + esc(r.phone) : "") + '</span>' +
+        (app ? '<span class="svc-badge svc-loans" style="margin-left:4px">has application</span>' : '') +
+        '<span class="rec-date">' + fmt(r.created_at) + '</span>' +
+        '<button class="del" data-del="enquiries" type="button">Delete</button>' +
+      '</div>' +
+      '<div class="rec-body">' + body + '</div>' +
+    '</div>';
+  }
+
+  function renderCombined () {
+    var appMap = {};
+    data.applications.forEach(function (a) { if (a.enquiry_id) appMap[a.enquiry_id] = a; });
+
+    var rows = data.enquiries.slice();
+    if (view.svc !== "all") rows = rows.filter(function (r) { return r.service === view.svc; });
+    if (view.q) {
+      var q = view.q.toLowerCase();
+      rows = rows.filter(function (r) {
+        var app = appMap[r.id];
+        var hay = [r.name, r.email, app && app.account_number, app && app.bank, app && app.occupation]
+          .filter(Boolean).join(" ").toLowerCase();
+        return hay.indexOf(q) >= 0;
+      });
+    }
+
+    var html = rows.length ? "" : '<p class="empty">No applicants match.</p>';
+    var matched = {};
+    rows.forEach(function (r) {
+      var app = appMap[r.id] || null;
+      if (app) matched[app.id] = true;
+      html += combinedCard(r, app);
+    });
+    /* applications whose enquiry is missing/deleted or filtered out */
+    data.applications.forEach(function (a) {
+      if (matched[a.id]) return;
+      if (view.q) {
+        var qq = view.q.toLowerCase();
+        var hay = [a.enquiry && a.enquiry.name, a.enquiry && a.enquiry.email, a.account_number, a.bank, a.occupation]
+          .filter(Boolean).join(" ").toLowerCase();
+        if (hay.indexOf(qq) < 0) return;
+      }
+      html += applicationCard(a);
+    });
+    document.getElementById("list").innerHTML = html;
+  }
+
+  function render () {
+    document.getElementById("st-total").textContent = data.enquiries.length;
+    document.getElementById("st-loans").textContent = data.enquiries.filter(function (r) { return r.service === "loans"; }).length;
+    document.getElementById("st-mortgages").textContent = data.enquiries.filter(function (r) { return r.service === "mortgages"; }).length;
+    document.getElementById("st-apps").textContent = data.applications.length;
+
+    document.getElementById("enquiry-filters").style.display = (view.tab !== "applications") ? "contents" : "none";
+
+    if (view.tab === "combined") { renderCombined(); return; }
+    var rows = view.tab === "enquiries" ? data.enquiries : data.applications;
+    if (view.tab === "enquiries" && view.svc !== "all") rows = rows.filter(function (r) { return r.service === view.svc; });
+    if (view.q) {
+      var q = view.q.toLowerCase();
+      rows = rows.filter(function (r) {
+        var name = r.name || (r.enquiry && r.enquiry.name) || "";
+        var email = r.email || (r.enquiry && r.enquiry.email) || "";
+        return name.toLowerCase().indexOf(q) >= 0 || email.toLowerCase().indexOf(q) >= 0;
+      });
+    }
+
+    var html = rows.length ? "" : '<p class="empty">No submissions match.</p>';
+    rows.forEach(function (r) {
+      html += view.tab === "enquiries" ? enquiryCard(r) : applicationCard(r);
+    });
+    document.getElementById("list").innerHTML = html;
+  }
+
+  function enquiryCard (r) {
+    var det = Object.keys(r.details || {}).map(function (k) { return [k.replace(/_/g, " "), r.details[k]]; });
+    return '<div class="rec" data-id="' + esc(r.id) + '">' +
+      '<div class="rec-head">' +
+        '<span class="svc-badge svc-' + esc(r.service) + '">' + esc(r.service) + '</span>' +
+        '<span class="rec-name">' + esc(r.name) + '</span>' +
+        '<span class="rec-meta">' + esc(r.email) + (r.phone ? " · " + esc(r.phone) : "") + '</span>' +
+        '<span class="rec-date">' + fmt(r.created_at) + '</span>' +
+        '<button class="del" data-del="enquiries" type="button">Delete</button>' +
+      '</div>' +
+      '<div class="rec-body">' + kv(det.concat([["Message", r.message]])) + '</div>' +
+    '</div>';
+  }
+
+  function applicationCard (r) {
+    var e = r.enquiry || {};
+    return '<div class="rec" data-id="' + esc(r.id) + '">' +
+      '<div class="rec-head">' +
+        '<span class="svc-badge svc-loans">loan application</span>' +
+        '<span class="rec-name">' + esc(e.name || "—") + '</span>' +
+        '<span class="rec-meta">' + esc(e.email || "") + '</span>' +
+        '<span class="rec-date">' + fmt(r.created_at) + '</span>' +
+        '<button class="del" data-del="loan_applications" type="button">Delete</button>' +
+      '</div>' +
+      '<div class="rec-body">' + kv([
+        ["Phone", e.phone],
+        ["Date of birth", r.dob],
+        ["Nationality", r.nationality],
+        ["Address", r.address],
+        ["Employment status", r.employment_status],
+        ["Occupation", r.occupation],
+        ["Length of employment", r.employment_length],
+        ["Monthly income", r.monthly_income != null ? "$" + r.monthly_income : ""],
+        ["Account number", r.account_number],
+        ["Bank", r.bank],
+        ["Account type", r.account_type],
+        ["Branch", r.branch],
+        ["Online banking", r.online_banking ? "Yes" : "No"],
+        ["Loan term", r.loan_term],
+        ["Purpose", r.purpose]
+      ]) + '</div>' +
+    '</div>';
+  }
+
+  /* ---------- interactions ---------- */
+  document.querySelectorAll(".tab").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      view.tab = b.getAttribute("data-tab");
+      render();
+    });
+  });
+  document.querySelectorAll(".filt").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".filt").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      view.svc = b.getAttribute("data-svc");
+      render();
+    });
+  });
+  document.getElementById("search").addEventListener("input", function () {
+    view.q = this.value.trim();
+    render();
+  });
+  document.getElementById("list").addEventListener("click", function (e) {
+    var del = e.target.closest("[data-del]");
+    if (del) {
+      var id = del.closest(".rec").getAttribute("data-id");
+      if (!confirm("Delete this record permanently?")) return;
+      showLoader();
+      sb.from(del.getAttribute("data-del")).delete().eq("id", id).then(load);
+      return;
+    }
+    var head = e.target.closest(".rec-head");
+    if (head) head.parentElement.classList.toggle("open");
+  });
+})();
+</script>
+
+</body>
+</html>
