@@ -16,12 +16,10 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--sans);background:var(--plum-deep);color:var(--white);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
   h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15}
-  button{font-family:var(--sans)}
+  button,select{font-family:var(--sans)}
   .wrap{max-width:960px;margin:0 auto;padding:0 24px;width:100%}
-
   #splash{position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;
-    background:radial-gradient(120% 120% at 50% 30%,#3A0353 0%,#2A023E 70%,#20022E 100%);
-    transition:opacity .7s ease}
+    background:radial-gradient(120% 120% at 50% 30%,#3A0353 0%,#2A023E 70%,#20022E 100%);transition:opacity .7s ease}
   #splash.hide{opacity:0;pointer-events:none}
   .splash-inner{text-align:center}
   .splash-inner svg{width:110px;height:auto}
@@ -42,10 +40,8 @@
   .btn-amber:hover{background:var(--cream)}
   .btn-ghost{border-color:var(--purple);color:var(--cream);background:transparent}
   .btn-ghost:hover{border-color:var(--cream)}
-
   main{flex:1;padding:40px 0 80px;width:100%}
 
-  /* ---------- login ---------- */
   .login-card{max-width:400px;margin:8vh auto 0;background:linear-gradient(160deg,rgba(128,74,138,.18),rgba(58,3,83,.4));
     border:1px solid rgba(128,74,138,.45);border-radius:24px;padding:40px 34px}
   .eyebrow{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:600}
@@ -60,17 +56,12 @@
   .login-error{display:none;margin:0 0 16px;padding:12px 16px;border-radius:12px;
     background:rgba(245,158,81,.12);border:1px solid rgba(245,158,81,.5);color:var(--cream);font-size:14px}
 
-  /* ---------- dashboard ---------- */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
-  .stat{background:linear-gradient(160deg,rgba(128,74,138,.16),rgba(58,3,83,.35));border:1px solid rgba(128,74,138,.4);
-        border-radius:16px;padding:18px 20px}
+  .stat{background:linear-gradient(160deg,rgba(128,74,138,.16),rgba(58,3,83,.35));border:1px solid rgba(128,74,138,.4);border-radius:16px;padding:18px 20px}
   .stat b{font-family:var(--serif);font-size:30px;color:var(--amber);display:block}
   .stat span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple)}
 
   .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
-  .tab{padding:9px 20px;border-radius:999px;background:transparent;border:1px solid rgba(128,74,138,.5);
-       color:var(--cream-soft);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s ease}
-  .tab.on{background:var(--amber);border-color:var(--amber);color:var(--plum-ink)}
   .filt{padding:7px 16px;border-radius:999px;background:transparent;border:1px solid rgba(128,74,138,.4);
         color:var(--purple);font-size:13px;cursor:pointer;transition:all .2s ease}
   .filt.on{border-color:var(--amber);color:var(--amber)}
@@ -83,28 +74,29 @@
        border-radius:16px;margin-bottom:12px;overflow:hidden}
   .rec-head{display:flex;align-items:center;gap:14px;padding:15px 20px;cursor:pointer;flex-wrap:wrap}
   .rec-head:hover{background:rgba(245,158,81,.05)}
-  .svc-badge{flex:none;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-    padding:4px 10px;border-radius:999px;border:1px solid}
-  .svc-loans{color:var(--amber);border-color:rgba(245,158,81,.55);background:rgba(245,158,81,.1)}
-  .svc-mortgages{color:var(--cream);border-color:rgba(248,210,153,.5);background:rgba(248,210,153,.08)}
-  .svc-investments{color:#C9A0E8;border-color:rgba(128,74,138,.7);background:rgba(128,74,138,.18)}
+  .svc-badge{flex:none;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid}
+  .svc-loan{color:var(--amber);border-color:rgba(245,158,81,.55);background:rgba(245,158,81,.1)}
+  .svc-mortgage{color:var(--cream);border-color:rgba(248,210,153,.5);background:rgba(248,210,153,.08)}
+  .svc-investment{color:#C9A0E8;border-color:rgba(128,74,138,.7);background:rgba(128,74,138,.18)}
   .rec-name{font-family:var(--serif);font-size:17px;color:var(--cream);font-weight:600}
   .rec-meta{font-size:13px;color:var(--purple)}
   .rec-date{margin-left:auto;font-size:12.5px;color:#5E3A6B}
   .rec-body{display:none;border-top:1px solid rgba(128,74,138,.3);padding:16px 20px}
   .rec.open .rec-body{display:block}
-  .kv{display:grid;grid-template-columns:200px 1fr;gap:6px 18px;font-size:14px}
+  .kv{display:grid;grid-template-columns:220px 1fr;gap:6px 18px;font-size:14px}
   .kv dt{color:var(--purple);text-transform:uppercase;font-size:11.5px;letter-spacing:.1em;padding-top:2px}
   .kv dd{color:var(--cream-soft);word-break:break-word}
-  .app-sub{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(245,158,81,.4)}
-  .app-sub h4{font-family:var(--serif);font-size:15px;color:var(--amber);margin-bottom:12px;font-weight:600}
   .empty{text-align:center;color:#5E3A6B;padding:50px 0;font-size:14.5px}
+  .status-sel{margin-left:6px;padding:6px 12px;border-radius:99px;background:rgba(32,2,46,.6);
+    border:1px solid rgba(128,74,138,.6);color:var(--cream);font-size:12.5px;cursor:pointer;outline:none}
+  .status-sel.approved{border-color:rgba(143,227,168,.6);color:#8FE3A8}
+  .status-sel.declined{border-color:rgba(242,160,160,.6);color:#F2A0A0}
+  .status-sel.pending{border-color:rgba(245,158,81,.6);color:var(--amber)}
   .del{margin-left:10px;padding:4px 12px;border-radius:99px;background:transparent;border:1px solid rgba(245,158,81,.4);
        color:var(--amber);font-size:12px;cursor:pointer}
   .del:hover{border-color:var(--amber)}
 
   footer{border-top:1px solid rgba(128,74,138,.3);padding:22px 0;background:var(--plum-ink);text-align:center;font-size:12.5px;color:#5E3A6B}
-
   @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.kv{grid-template-columns:1fr;gap:2px 0}.kv dt{margin-top:8px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -142,52 +134,35 @@
 </header>
 
 <main class="wrap">
-
-  <!-- LOGIN -->
   <div class="login-card" id="login-view">
     <p class="eyebrow">Staff only</p>
     <h1>Admin sign in</h1>
-    <p class="sub">Sign in to view enquiry and loan application submissions.</p>
+    <p class="sub">Sign in to view applications and manage their status.</p>
     <p class="login-error" id="login-error" role="alert"></p>
     <form id="login-form">
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" type="email" autocomplete="username" required>
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" required>
-      </div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
       <button class="btn btn-amber btn-wide" type="submit">Sign in</button>
     </form>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="dash-view" hidden>
     <div class="stats">
-      <div class="stat"><b id="st-total">–</b><span>Total enquiries</span></div>
-      <div class="stat"><b id="st-loans">–</b><span>Loans</span></div>
-      <div class="stat"><b id="st-mortgages">–</b><span>Mortgages</span></div>
-      <div class="stat"><b id="st-apps">–</b><span>Loan applications</span></div>
+      <div class="stat"><b id="st-total">–</b><span>Applications</span></div>
+      <div class="stat"><b id="st-loan">–</b><span>Loans</span></div>
+      <div class="stat"><b id="st-mortgage">–</b><span>Mortgages</span></div>
+      <div class="stat"><b id="st-investment">–</b><span>Investments</span></div>
     </div>
-
     <div class="toolbar">
-      <button class="tab on" data-tab="combined" type="button">By applicant</button>
-      <button class="tab" data-tab="enquiries" type="button">Enquiries</button>
-      <button class="tab" data-tab="applications" type="button">Loan applications</button>
-      <span id="enquiry-filters" style="display:contents">
-        <button class="filt on" data-svc="all" type="button">All</button>
-        <button class="filt" data-svc="loans" type="button">Loans</button>
-        <button class="filt" data-svc="mortgages" type="button">Mortgages</button>
-        <button class="filt" data-svc="investments" type="button">Investments</button>
-      </span>
-      <input class="search" id="search" type="search" placeholder="Search name or email…">
+      <button class="filt on" data-type="all" type="button">All</button>
+      <button class="filt" data-type="loan" type="button">Loans</button>
+      <button class="filt" data-type="mortgage" type="button">Mortgages</button>
+      <button class="filt" data-type="investment" type="button">Investments</button>
+      <input class="search" id="search" type="search" placeholder="Search name, email, bank…">
       <button class="btn btn-ghost" id="refresh" type="button">Refresh</button>
     </div>
-
     <div id="list"></div>
   </div>
-
 </main>
 
 <footer>Sterling Finance admin — authorised staff only.</footer>
@@ -199,8 +174,8 @@
   function showLoader () { splash.style.display = "flex"; splash.classList.remove("hide"); }
   function hideLoader () { splash.classList.add("hide"); setTimeout(function () { splash.style.display = "none"; }, 400); }
 
-  var view = { tab: "combined", svc: "all", q: "" };
-  var data = { enquiries: [], applications: [] };
+  var view = { type: "all", q: "" };
+  var rows = [];
 
   function esc (s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -212,16 +187,7 @@
     return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
       + " " + d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
   }
-  function kv (pairs) {
-    var out = '<dl class="kv">';
-    pairs.forEach(function (p) {
-      if (p[1] === null || p[1] === undefined || p[1] === "") return;
-      out += "<dt>" + esc(p[0]) + "</dt><dd>" + esc(p[1]) + "</dd>";
-    });
-    return out + "</dl>";
-  }
 
-  /* ---------- auth ---------- */
   function showDash (user) {
     document.getElementById("login-view").hidden = true;
     document.getElementById("dash-view").hidden = false;
@@ -259,182 +225,92 @@
     sb.auth.signOut().then(showLogin);
   });
 
-  /* ---------- data ---------- */
+  var TABLES = { loan: "loan_applications", mortgage: "mortgage_applications", investment: "investment_applications" };
+  var loadError = "";
+
   function load () {
     showLoader();
+    loadError = "";
     Promise.all([
-      sb.from("enquiries").select("*").order("created_at", { ascending: false }).limit(500),
-      sb.from("loan_applications").select("*, enquiry:enquiries(name, email, service)").order("created_at", { ascending: false }).limit(500)
+      sb.from("loan_applications").select("*").order("created_at", { ascending: false }).limit(500),
+      sb.from("mortgage_applications").select("*").order("created_at", { ascending: false }).limit(500),
+      sb.from("investment_applications").select("*").order("created_at", { ascending: false }).limit(500)
     ]).then(function (res) {
       hideLoader();
-      data.enquiries = (res[0].error) ? [] : res[0].data;
-      data.applications = (res[1].error) ? [] : res[1].data;
-      if (res[0].error || res[1].error) {
-        document.getElementById("list").innerHTML =
-          '<p class="empty">Could not load submissions. Did you run the admin policies in the SQL setup?</p>';
+      rows = [];
+      if (res[0].data) rows = rows.concat(res[0].data.map(function (r) { r.type = "loan"; return r; }));
+      if (res[1].data) rows = rows.concat(res[1].data.map(function (r) { r.type = "mortgage"; return r; }));
+      if (res[2].data) rows = rows.concat(res[2].data.map(function (r) { r.type = "investment"; return r; }));
+      rows.sort(function (a, b) { return new Date(b.created_at) - new Date(a.created_at); });
+      if (!rows.length && (res[0].error || res[1].error || res[2].error)) {
+        loadError = "Could not read the application tables. Run SQL sections 8–9 in the SQL Editor, then Refresh.";
       }
       render();
     });
   }
   document.getElementById("refresh").addEventListener("click", load);
 
-  /* ---------- rendering ---------- */
-  function combinedCard (r, app) {
-    var det = Object.keys(r.details || {}).map(function (k) { return [k.replace(/_/g, " "), r.details[k]]; });
-    var body = kv(det.concat([["Message", r.message]]));
-    if (app) {
-      body += '<div class="app-sub"><h4>Loan application — step 2</h4>' + kv([
-        ["Date of birth", app.dob],
-        ["Nationality", app.nationality],
-        ["Address", app.address],
-        ["Employment status", app.employment_status],
-        ["Occupation", app.occupation],
-        ["Length of employment", app.employment_length],
-        ["Monthly income", app.monthly_income != null ? "$" + app.monthly_income : ""],
-        ["Account number", app.account_number],
-        ["Bank", app.bank],
-        ["Account type", app.account_type],
-        ["Branch", app.branch],
-        ["Online banking", app.online_banking ? "Yes" : "No"],
-        ["Loan term", app.loan_term],
-        ["Purpose", app.purpose]
-      ]) + '</div>';
+  function render () {
+    if (loadError) {
+      document.getElementById("st-total").textContent = "0";
+      document.getElementById("st-loan").textContent = "0";
+      document.getElementById("st-mortgage").textContent = "0";
+      document.getElementById("st-investment").textContent = "0";
+      document.getElementById("list").innerHTML = '<p class="empty">' + loadError + '</p>';
+      return;
     }
-    return '<div class="rec" data-id="' + esc(r.id) + '">' +
-      '<div class="rec-head">' +
-        '<span class="svc-badge svc-' + esc(r.service) + '">' + esc(r.service) + '</span>' +
-        '<span class="rec-name">' + esc(r.name) + '</span>' +
-        '<span class="rec-meta">' + esc(r.email) + (r.phone ? " · " + esc(r.phone) : "") + '</span>' +
-        (app ? '<span class="svc-badge svc-loans" style="margin-left:4px">has application</span>' : '') +
-        '<span class="rec-date">' + fmt(r.created_at) + '</span>' +
-        '<button class="del" data-del="enquiries" type="button">Delete</button>' +
-      '</div>' +
-      '<div class="rec-body">' + body + '</div>' +
-    '</div>';
-  }
+    document.getElementById("st-total").textContent = rows.length;
+    document.getElementById("st-loan").textContent = rows.filter(function (r) { return r.type === "loan"; }).length;
+    document.getElementById("st-mortgage").textContent = rows.filter(function (r) { return r.type === "mortgage"; }).length;
+    document.getElementById("st-investment").textContent = rows.filter(function (r) { return r.type === "investment"; }).length;
 
-  function renderCombined () {
-    var appMap = {};
-    data.applications.forEach(function (a) { if (a.enquiry_id) appMap[a.enquiry_id] = a; });
-
-    var rows = data.enquiries.slice();
-    if (view.svc !== "all") rows = rows.filter(function (r) { return r.service === view.svc; });
+    var list = rows;
+    if (view.type !== "all") list = list.filter(function (r) { return r.type === view.type; });
     if (view.q) {
       var q = view.q.toLowerCase();
-      rows = rows.filter(function (r) {
-        var app = appMap[r.id];
-        var hay = [r.name, r.email, app && app.account_number, app && app.bank, app && app.occupation]
-          .filter(Boolean).join(" ").toLowerCase();
+      list = list.filter(function (r) {
+        var hay = [r.full_name, r.email, r.phone, JSON.stringify(r.details || {})].join(" ").toLowerCase();
         return hay.indexOf(q) >= 0;
       });
     }
 
-    var html = rows.length ? "" : '<p class="empty">No applicants match.</p>';
-    var matched = {};
-    rows.forEach(function (r) {
-      var app = appMap[r.id] || null;
-      if (app) matched[app.id] = true;
-      html += combinedCard(r, app);
-    });
-    /* applications whose enquiry is missing/deleted or filtered out */
-    data.applications.forEach(function (a) {
-      if (matched[a.id]) return;
-      if (view.q) {
-        var qq = view.q.toLowerCase();
-        var hay = [a.enquiry && a.enquiry.name, a.enquiry && a.enquiry.email, a.account_number, a.bank, a.occupation]
-          .filter(Boolean).join(" ").toLowerCase();
-        if (hay.indexOf(qq) < 0) return;
-      }
-      html += applicationCard(a);
-    });
+    var html = list.length ? "" : '<p class="empty">No applications match.</p>';
+    list.forEach(function (r) { html += card(r); });
     document.getElementById("list").innerHTML = html;
   }
 
-  function render () {
-    document.getElementById("st-total").textContent = data.enquiries.length;
-    document.getElementById("st-loans").textContent = data.enquiries.filter(function (r) { return r.service === "loans"; }).length;
-    document.getElementById("st-mortgages").textContent = data.enquiries.filter(function (r) { return r.service === "mortgages"; }).length;
-    document.getElementById("st-apps").textContent = data.applications.length;
-
-    document.getElementById("enquiry-filters").style.display = (view.tab !== "applications") ? "contents" : "none";
-
-    if (view.tab === "combined") { renderCombined(); return; }
-    var rows = view.tab === "enquiries" ? data.enquiries : data.applications;
-    if (view.tab === "enquiries" && view.svc !== "all") rows = rows.filter(function (r) { return r.service === view.svc; });
-    if (view.q) {
-      var q = view.q.toLowerCase();
-      rows = rows.filter(function (r) {
-        var name = r.name || (r.enquiry && r.enquiry.name) || "";
-        var email = r.email || (r.enquiry && r.enquiry.email) || "";
-        return name.toLowerCase().indexOf(q) >= 0 || email.toLowerCase().indexOf(q) >= 0;
-      });
-    }
-
-    var html = rows.length ? "" : '<p class="empty">No submissions match.</p>';
-    rows.forEach(function (r) {
-      html += view.tab === "enquiries" ? enquiryCard(r) : applicationCard(r);
-    });
-    document.getElementById("list").innerHTML = html;
-  }
-
-  function enquiryCard (r) {
-    var det = Object.keys(r.details || {}).map(function (k) { return [k.replace(/_/g, " "), r.details[k]]; });
-    return '<div class="rec" data-id="' + esc(r.id) + '">' +
+  function card (r) {
+    var det = Object.keys(r.details || {}).map(function (k) {
+      var v = r.details[k];
+      if (v === null || v === undefined || v === "") return "";
+      return "<dt>" + esc(k.replace(/_/g, " ")) + "</dt><dd>" + esc(typeof v === "boolean" ? (v ? "Yes" : "No") : v) + "</dd>";
+    }).join("");
+    return '<div class="rec" data-id="' + esc(r.id) + '" data-type="' + esc(r.type) + '">' +
       '<div class="rec-head">' +
-        '<span class="svc-badge svc-' + esc(r.service) + '">' + esc(r.service) + '</span>' +
-        '<span class="rec-name">' + esc(r.name) + '</span>' +
+        '<span class="svc-badge svc-' + esc(r.type) + '">' + esc(r.type) + '</span>' +
+        '<span class="rec-name">' + esc(r.full_name) + '</span>' +
         '<span class="rec-meta">' + esc(r.email) + (r.phone ? " · " + esc(r.phone) : "") + '</span>' +
+        '<select class="status-sel ' + esc(r.status) + '" data-status>' +
+          '<option value="pending"' + (r.status === "pending" ? " selected" : "") + '>Pending</option>' +
+          '<option value="approved"' + (r.status === "approved" ? " selected" : "") + '>Approved</option>' +
+          '<option value="declined"' + (r.status === "declined" ? " selected" : "") + '>Declined</option>' +
+        '</select>' +
         '<span class="rec-date">' + fmt(r.created_at) + '</span>' +
-        '<button class="del" data-del="enquiries" type="button">Delete</button>' +
+        '<button class="del" data-del type="button">Delete</button>' +
       '</div>' +
-      '<div class="rec-body">' + kv(det.concat([["Message", r.message]])) + '</div>' +
+      '<div class="rec-body"><dl class="kv">' +
+        "<dt>Application ID</dt><dd>" + esc(r.id) + "</dd>" +
+        "<dt>Status</dt><dd>" + esc(r.status) + "</dd>" +
+        det +
+      '</dl></div>' +
     '</div>';
   }
 
-  function applicationCard (r) {
-    var e = r.enquiry || {};
-    return '<div class="rec" data-id="' + esc(r.id) + '">' +
-      '<div class="rec-head">' +
-        '<span class="svc-badge svc-loans">loan application</span>' +
-        '<span class="rec-name">' + esc(e.name || "—") + '</span>' +
-        '<span class="rec-meta">' + esc(e.email || "") + '</span>' +
-        '<span class="rec-date">' + fmt(r.created_at) + '</span>' +
-        '<button class="del" data-del="loan_applications" type="button">Delete</button>' +
-      '</div>' +
-      '<div class="rec-body">' + kv([
-        ["Phone", e.phone],
-        ["Date of birth", r.dob],
-        ["Nationality", r.nationality],
-        ["Address", r.address],
-        ["Employment status", r.employment_status],
-        ["Occupation", r.occupation],
-        ["Length of employment", r.employment_length],
-        ["Monthly income", r.monthly_income != null ? "$" + r.monthly_income : ""],
-        ["Account number", r.account_number],
-        ["Bank", r.bank],
-        ["Account type", r.account_type],
-        ["Branch", r.branch],
-        ["Online banking", r.online_banking ? "Yes" : "No"],
-        ["Loan term", r.loan_term],
-        ["Purpose", r.purpose]
-      ]) + '</div>' +
-    '</div>';
-  }
-
-  /* ---------- interactions ---------- */
-  document.querySelectorAll(".tab").forEach(function (b) {
-    b.addEventListener("click", function () {
-      document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("on"); });
-      b.classList.add("on");
-      view.tab = b.getAttribute("data-tab");
-      render();
-    });
-  });
   document.querySelectorAll(".filt").forEach(function (b) {
     b.addEventListener("click", function () {
       document.querySelectorAll(".filt").forEach(function (x) { x.classList.remove("on"); });
       b.classList.add("on");
-      view.svc = b.getAttribute("data-svc");
+      view.type = b.getAttribute("data-type");
       render();
     });
   });
@@ -442,17 +318,40 @@
     view.q = this.value.trim();
     render();
   });
+
   document.getElementById("list").addEventListener("click", function (e) {
+    if (e.target.closest("[data-status]") || e.target.closest(".status-sel")) return;
     var del = e.target.closest("[data-del]");
     if (del) {
-      var id = del.closest(".rec").getAttribute("data-id");
-      if (!confirm("Delete this record permanently?")) return;
+      var rec = del.closest(".rec");
+      var id = rec.getAttribute("data-id");
+      var table = TABLES[rec.getAttribute("data-type")] || "loan_applications";
+      if (!confirm("Delete this application permanently?")) return;
       showLoader();
-      sb.from(del.getAttribute("data-del")).delete().eq("id", id).then(load);
+      sb.from(table).delete().eq("id", id).then(load);
       return;
     }
     var head = e.target.closest(".rec-head");
     if (head) head.parentElement.classList.toggle("open");
+  });
+
+  /* status change -> update Supabase (admin sees it; customer routing reacts) */
+  document.getElementById("list").addEventListener("change", function (e) {
+    var sel = e.target.closest("[data-status]");
+    if (!sel) return;
+    var rec = sel.closest(".rec");
+    var id = rec.getAttribute("data-id");
+    var table = TABLES[rec.getAttribute("data-type")] || "loan_applications";
+    showLoader();
+    sb.from(table).update({ status: sel.value }).eq("id", id).then(function (r) {
+      hideLoader();
+      if (r.error) { alert("Update failed: " + r.error.message); load(); }
+      else {
+        var row = rows.find(function (x) { return x.id === id; });
+        if (row) row.status = sel.value;
+        sel.className = "status-sel " + sel.value;
+      }
+    });
   });
 })();
 </script>
